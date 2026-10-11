@@ -1,0 +1,21 @@
+package com.projectmgr.api.validation;
+
+import com.projectmgr.api.validation.impl.StatusValidation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import java.lang.annotation.*;
+
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = StatusValidation.class)
+@Documented
+public @interface StatusConstraint {
+    boolean allowNull() default false;
+
+    String message() default "Status is invalid";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}

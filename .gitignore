@@ -1,0 +1,44 @@
+target/
+/logs
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### project ignore ###
+source/base-project/application-production.properties
+source/base-project/deploy_ec2.sh
+source/base-project/execute_jar_on_vm.sh
+source/base-project/target
+source/base-project/logs
+source/base-project/.idea
+source/base-project/*.iml
+
+### Vibe Setting ###
+.claude
+bash.exe.stackdump
+
+
+### macOS ###
+.DS_Store

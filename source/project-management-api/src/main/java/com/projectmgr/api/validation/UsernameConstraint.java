@@ -1,0 +1,24 @@
+package com.projectmgr.api.validation;
+
+import com.projectmgr.api.constant.BaseConstant;
+import com.projectmgr.api.validation.impl.UsernameValidation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import java.lang.annotation.*;
+
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = UsernameValidation.class)
+@Documented
+public @interface UsernameConstraint {
+    boolean allowNull() default false;
+
+    String pattern() default BaseConstant.USERNAME_PATTERN;
+
+    String message() default "Username is invalid";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}

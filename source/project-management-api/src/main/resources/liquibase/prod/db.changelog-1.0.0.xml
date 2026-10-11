@@ -1,0 +1,468 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1774064697885-1">
+        <createTable tableName="db_account">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_accountPK"/>
+            </column>
+            <column name="role" type="INT"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="group_id" type="BIGINT"/>
+            <column name="avatar_path" type="VARCHAR(255)"/>
+            <column name="is_super_admin" type="BIT"/>
+            <column name="is_mfa" type="BIT"/>
+            <column name="secret_key" type="VARCHAR(255)"/>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-2">
+        <createTable tableName="db_group">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_groupPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="is_system_role" type="BIT"/>
+            <column name="kind" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-3">
+        <createTable tableName="db_permission">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_permissionPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+                        <column name="permission_code" type="VARCHAR(255)">
+                <constraints unique="true" uniqueConstraintName="UC_DB_PERMISSIONPERMISSION_CODE_COL"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="action" type="VARCHAR(255)"/>
+            <column name="show_menu" type="BIT"/>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-4">
+        <createTable tableName="db_permission_group">
+            <column name="group_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-5">
+        <addUniqueConstraint columnNames="name" constraintName="UC_DB_GROUPNAME_COL" tableName="db_group"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-6">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_account"
+                                 constraintName="FK64k7ycl6abb79kuylmbilxplq" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-7">
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_permission_group"
+                                 constraintName="FKfq2iusbvl87yreufyqsa5f6e3" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_group"
+                                 validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-8">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_permission_group"
+                                 constraintName="FKhyl75m0nsk3ds5eewifn3arde" deferrable="false"
+                                 initiallyDeferred="false" referencedColumnNames="id"
+                                 referencedTableName="db_permission" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-10">
+        <insert tableName="db_group">
+            <column name="id" valueNumeric="15"/>
+            <column name="name" value="ROLE ADMIN"/>
+            <column name="description" value="Role for ADMIN"/>
+            <column name="kind" valueNumeric="1"/>
+            <column name="is_system_role" valueBoolean="false"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T08:19:59"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2023-09-30T04:45:04"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-11">
+        <createTable tableName="oauth2_registered_client">
+            <column name="id" type="VARCHAR(100)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id_issued_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_secret" type="VARCHAR(200)"/>
+            <column name="client_secret_expires_at" type="TIMESTAMP"/>
+            <column name="client_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_authentication_methods" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_grant_types" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="redirect_uris" type="VARCHAR(1000)"/>
+            <column name="post_logout_redirect_uris" type="VARCHAR(1000)"/>
+            <column name="scopes" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-12">
+        <insert tableName="oauth2_registered_client">
+            <column name="id" value="abc_client_001"/>
+            <column name="client_id" value="abc_client"/>
+            <column name="client_id_issued_at" valueDate="2020-06-24T00:00:00"/>
+            <column name="client_secret" value="{bcrypt}$2a$12$zlKHpSw7.8asgQFCexLLkudLYkd9wQGElMps2yVG5p4vm2f.CTYcy"/>
+            <column name="client_name" value="abc_client"/>
+            <column name="client_authentication_methods" value="client_secret_basic,client_secret_post"/>
+            <column name="authorization_grant_types" value="password,password_mfa,refresh_token,client_credentials"/>
+            <column name="scopes" value="read,write"/>
+            <column name="client_settings" value="{&quot;@class&quot;:&quot;java.util.Collections$UnmodifiableMap&quot;,&quot;settings.client.require-proof-key&quot;:false,&quot;settings.client.require-authorization-consent&quot;:false}"/>
+            <column name="token_settings" value="{&quot;@class&quot;:&quot;java.util.Collections$UnmodifiableMap&quot;,&quot;settings.token.reuse-refresh-tokens&quot;:false,&quot;settings.token.id-token-signature-algorithm&quot;:[&quot;org.springframework.security.oauth2.jose.jws.SignatureAlgorithm&quot;,&quot;RS256&quot;],&quot;settings.token.access-token-time-to-live&quot;:[&quot;java.time.Duration&quot;,2592000.000000000],&quot;settings.token.access-token-format&quot;:{&quot;@class&quot;:&quot;org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat&quot;,&quot;value&quot;:&quot;self-contained&quot;},&quot;settings.token.refresh-token-time-to-live&quot;:[&quot;java.time.Duration&quot;,2592000.000000000],&quot;settings.token.authorization-code-time-to-live&quot;:[&quot;java.time.Duration&quot;,300.000000000],&quot;settings.token.device-code-time-to-live&quot;:[&quot;java.time.Duration&quot;,300.000000000]}"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-13">
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024257"/>
+            <column name="name" value="Create account"/>
+            <column name="action" value="/v1/account/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create account"/>
+            <column name="permission_code" value="ACC_C"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:14:55"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:14:55"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024258"/>
+            <column name="name" value="Get account detail"/>
+            <column name="action" value="/v1/account/get"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get account detail bold customer and admin"/>
+            <column name="permission_code" value="ACC_V"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:19:16"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:19:16"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024259"/>
+            <column name="name" value="Get list account"/>
+            <column name="action" value="/v1/account/list"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="description" value="Get list account both customer and admin"/>
+            <column name="permission_code" value="ACC_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:21:13"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:21:13"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024260"/>
+            <column name="name" value="Delete an account"/>
+            <column name="action" value="/v1/account/delete"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Delete account both customer and admin"/>
+            <column name="permission_code" value="ACC_D"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:21:34"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:21:34"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024261"/>
+            <column name="name" value="Create admin account"/>
+            <column name="action" value="/v1/account/create_admin"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create an admin account"/>
+            <column name="permission_code" value="ACC_C_AD"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T02:24:17"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T02:24:17"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024262"/>
+            <column name="name" value="Update a profile admin"/>
+            <column name="action" value="/v1/account/update_profile_admin"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update a profile admin"/>
+            <column name="permission_code" value="ACC_U_PROFILE_AD"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T05:08:15"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T05:08:15"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024263"/>
+            <column name="name" value="Update a admin account"/>
+            <column name="action" value="/v1/account/update_admin"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update a admin account"/>
+            <column name="permission_code" value="ACC_U_AD"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T05:09:14"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T05:09:14"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024270"/>
+            <column name="name" value="upload file"/>
+            <column name="action" value="/v1/file/upload"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="upload file"/>
+            <column name="permission_code" value="FILE_U"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2022-09-21T04:34:33"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2022-09-21T04:34:33"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024271"/>
+            <column name="name" value="Create group permission"/>
+            <column name="action" value="/v1/group/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create a group"/>
+            <column name="permission_code" value="GR_C"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:57:08"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:57:08"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024272"/>
+            <column name="name" value="Get detail group permission"/>
+            <column name="action" value="/v1/group/get"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Get detail a group permission"/>
+            <column name="permission_code" value="GR_V"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:57:34"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:57:34"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024273"/>
+            <column name="name" value="Get list group permission"/>
+            <column name="action" value="/v1/group/list"/>
+            <column name="show_menu" valueBoolean="true"/>
+            <column name="description" value="Get list group permission"/>
+            <column name="permission_code" value="GR_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:58:00"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:58:00"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024274"/>
+            <column name="name" value="Update a group permission"/>
+            <column name="action" value="/v1/group/update"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Update a group permission"/>
+            <column name="permission_code" value="GR_U"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T04:58:21"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-06-24T04:58:21"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024275"/>
+            <column name="name" value="List permission"/>
+            <column name="action" value="/v1/permission/list"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="List permission"/>
+            <column name="permission_code" value="PER_L"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-09-13T04:48:58"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-09-13T04:48:58"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="6778614941024276"/>
+            <column name="name" value="Create permission"/>
+            <column name="action" value="/v1/permission/create"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Create permission"/>
+            <column name="permission_code" value="PER_C"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-09-13T04:49:13"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2020-09-13T04:49:13"/>
+        </insert>
+        <insert tableName="db_permission">
+            <column name="id" valueNumeric="9762524115927049"/>
+            <column name="name" value="Reset mfa"/>
+            <column name="action" value="/v1/account/reset-mfa"/>
+            <column name="show_menu" valueBoolean="false"/>
+            <column name="description" value="Reset mfa for an account"/>
+            <column name="permission_code" value="ACC_U_MFA"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2026-08-18T09:00:09"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2026-08-18T09:00:09"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-15">
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024270"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024276"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024273"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024275"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024272"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024274"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024271"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024263"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024260"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024257"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024262"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024259"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024261"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="6778614941024258"/>
+        </insert>
+        <insert tableName="db_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="9762524115927049"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Authentication" id="1774064697885-17">
+        <insert tableName="db_account">
+            <column name="id" valueNumeric="2"/>
+            <column name="role" valueNumeric="1"/>
+            <column name="username" value="admin"/>
+            <column name="phone"/>
+            <column name="email" value="droiddev.89@gmail.com"/>
+            <column name="password" value="{bcrypt}$2a$10$YMZFAA1FLQQzz29qLCtHG.8oBvq0g/6tpX0ODh269rckAU9lsgrrS"/>
+            <column name="full_name" value="Super admin"/>
+            <column name="is_super_admin" valueBoolean="true"/>
+            <column name="is_mfa" valueBoolean="false"/>
+            <column name="secret_key"/>
+            <column name="group_id" valueNumeric="15"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2020-06-24T00:22:30"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2023-04-16T14:52:55"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
